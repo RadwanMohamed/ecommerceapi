@@ -3,9 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Transaction extends Model
 {
+    use SoftDeletes;
+    
+    protected $dates = ['deleted_at'];
     protected $fillable = ['quantity','product_id','buyer_id'];
     public function buyer()
     {

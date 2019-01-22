@@ -3,9 +3,16 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
+    use SoftDeletes;
+
+    protected $dates = ['deleted_at'];
+    protected $hidden = ['pivot'];
+
+
     /**
      * @const available if products number >0
      */
@@ -17,22 +24,29 @@ class Product extends Model
 
     protected $fillable = ['name','description','quantity','status','image','seller_id'];
 
+    
+    
     /**
      * check whether the product is availanle or not
      * @return boolean 
      */
+
     public function isAvailable()
     {
         return $this->status == Product::AVAILABLE_PRODUCT;
     }
+
+
     public function seller()
     {
         return $this->belongsTo('App\Seller');
     }
+
     public function transactions()
     {
         return $this->hasMany('App\Transaction');
     }
+    
     public function categories()
     {
         return $this->belongsToMany('App\Category');
